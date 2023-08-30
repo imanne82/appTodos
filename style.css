@@ -1,0 +1,205 @@
+/*         add fons         */
+@font-face {
+    font-family: iranSans;
+    src: url("./FontsIranSans/ttf/IRANSansWeb(FaNum).ttf") format("opentype"),
+    url("./FontsIranSans/ttf/IRANSansWeb(FaNum)_Bold.ttf") format("opentype"),
+    url("./FontsIranSans/ttf/IRANSansWeb(FaNum)_Light.ttf") format("opentype"),
+    url("./FontsIranSans/ttf/IRANSansWeb(FaNum)_Medium.ttf") format("opentype"),
+    url("./FontsIranSans/ttf/IRANSansWeb(FaNum)_UltraLight.ttf") format("opentype");
+}
+
+/*              class all button            */
+.btn {
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    padding: 5px;
+    cursor: pointer;
+    width: 7rem;
+    background: green;
+    color: white;
+}
+
+/*          class  input && tag select                                    */
+.input {
+    padding: 7px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+}
+
+/*         all document                                    */
+* {
+    direction: rtl;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: iranSans, 'sans-serif';
+}
+
+header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background: #333;
+    height: 10rem;
+    justify-content: center;
+}
+
+
+/*                div container input line 15                     */
+#containerInput {
+    width: 22rem;
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 10px;
+}
+
+#containerInput span i {
+    cursor: pointer;
+    display: block;
+    font-size: 25px;
+    color: green;
+}
+
+#containerInput input {
+    width: 20rem;
+}
+
+#containerInput input:focus {
+    box-shadow: 0 0 5px white;
+}
+
+/*           select tag line 23                            */
+#selectTag {
+    cursor: pointer;
+    margin: 0 2rem;
+}
+
+/*               navbar                               */
+nav {
+    display: flex;
+    flex-flow: column;
+    flex-wrap: wrap;
+    background: #383838;
+    width: 100%;
+    height: 519px;
+}
+
+/*               box content input                           */
+.boxTodo {
+text-align: justify;
+    word-wrap: break-word;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 8px;
+    border-radius: 10px;
+    margin: 1rem 1rem 1rem 1rem;
+    width: 20rem;
+    min-height: 40px;
+    background: white;
+}
+
+.boxTodo .iconEdit i {
+    cursor: pointer;
+    width: 2rem;
+    font-size: 18px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: red;
+
+}
+
+.done {
+    background: lightgreen;
+    color: white;
+}
+
+.delete {
+    background: lightcoral;
+    color: white;
+}
+
+.containerModal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, .5);
+}
+
+
+.modal {
+    animation: iman .8s ease-in-out;
+    /*transform: translate(-35rem, 15rem);*/
+    display: flex;
+    flex-flow: column;
+    justify-content: space-evenly;
+    align-items: center;
+    /*top: rem;*/
+    border-radius: 20px;
+    width: 300px;
+    height: 170px;
+    background: white;
+    position: absolute;
+    z-index: 2;
+}
+
+.delete {
+    background: lightcoral;
+    color: white;
+}
+
+.buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.todoDel {
+    background: red;
+    display: none;
+}
+
+.modal p {
+    margin-bottom: 1rem;
+}
+
+@keyframes iman {
+    0% {
+        transform: translate(0, -25rem);
+    }
+}
+
+@media (max-width: 697px) {
+    header {
+        flex-flow: column-reverse;
+        justify-content: space-evenly;
+    }
+
+    #containerInput input {
+        width: 16rem;
+    }
+
+    #containerInput {
+        width: 18rem;
+    }
+
+    #selectTag {
+        cursor: pointer;
+        width: 18rem;
+    }
+    .boxTodo {
+        max-width: 18rem;
+    }
+    nav {
+        min-height: 710px;
+        flex-wrap: nowrap;
+        width: 100%;
+    }
+}
