@@ -36,7 +36,9 @@
     box-sizing: border-box;
     font-family: iranSans, 'sans-serif';
 }
-
+html{
+    scroll-behavior: smooth;
+}
 header {
     display: flex;
     align-items: center;
@@ -100,6 +102,7 @@ nav {
     width: 19rem;
     min-height: 40px;
     background: white;
+    box-shadow: 0 0 1px #f1f1f1;
 }
 
 .boxTodo .iconEdit i {

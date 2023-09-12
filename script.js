@@ -1,7 +1,6 @@
 const $ = document
 const input = $.querySelector('#input-todo')
 const saveTodoBtn = $.querySelector('#saveTodoBtn')
-// const selectTag = $.querySelector('#selectTag')
 const containerModal = $.querySelector('.containerModal')
 const contentModal = $.querySelector('#contentModal')
 const containerTodos = $.querySelector('#containerTodos')
@@ -18,7 +17,6 @@ window.addEventListener('load', () => {
         showModal('flex', "اتصال خود را بررسی کنید")
     })
 })
-
 // function creatData : creat todo send in dataBase
 function creatData() {
     if (input.value) {
@@ -75,42 +73,46 @@ async function get(api) {
 function showModal(display, text) {
     containerModal.style.display = display
     contentModal.innerHTML = text
-
 }
 
-// function templateTodo : creat template todos and append document
+// function templateTodo : creat template All todos and append document
 function templateTodo(listTodos) {
     containerTodos.innerHTML = ''
     let fragment = $.createDocumentFragment()
     listTodos.forEach(todo => {
-        let {content, isDone} = todo[1]
-        let boxTodo = $.createElement('div')
-        boxTodo.className = 'boxTodo'
-        boxTodo.id = todo[0]
-        boxTodo.innerHTML = content
-        let spanTag = $.createElement('span')
-        spanTag.className = "iconEdit"
-        spanTag.addEventListener('click', () => {
-            if (iTag.className === 'icofont-ui-check') {
-                editeTodo(todo[0], content, false)
-
-            } else {
-                editeTodo(todo[0], content, true)
-            }
-        })
-        let iTag = $.createElement('i')
-        if (isDone) {
-            iTag.className = 'icofont-ui-check'
-            iTag.style.color = 'green'
-            boxTodo.classList.add('done')
-        } else {
-            iTag.className = 'icofont-ui-close'
-        }
-        spanTag.append(iTag)
-        boxTodo.append(spanTag)
-        fragment.append(boxTodo)
+        generatorTemplateTodos(todo, fragment)
     })
     containerTodos.append(fragment)
+}
+
+//
+function generatorTemplateTodos(todo, fragment) {
+    let {content, isDone} = todo[1]
+    let boxTodo = $.createElement('div')
+    boxTodo.className = 'boxTodo'
+    boxTodo.id = todo[0]
+    boxTodo.innerHTML = content
+    let spanTag = $.createElement('span')
+    spanTag.className = "iconEdit"
+    spanTag.addEventListener('click', () => {
+        if (iTag.className === 'icofont-ui-check') {
+            editeTodo(todo[0], content, false)
+
+        } else {
+            editeTodo(todo[0], content, true)
+        }
+    })
+    let iTag = $.createElement('i')
+    if (isDone) {
+        iTag.className = 'icofont-ui-check'
+        iTag.style.color = 'green'
+        boxTodo.classList.add('done')
+    } else {
+        iTag.className = 'icofont-ui-close'
+    }
+    spanTag.append(iTag)
+    boxTodo.append(spanTag)
+    fragment.append(boxTodo)
 }
 
 function editeTodo(todoID, content, done) {
@@ -127,6 +129,7 @@ function editeTodo(todoID, content, done) {
         let getTodo = get('https://apptodos-2a17c-default-rtdb.firebaseio.com/apptodos/todo.json')
         getTodo.then((data) => {
             templateTodo(data)
+            selectTag.value = "همه"
         })
     }).catch(err => console.log(err))
 }
@@ -162,10 +165,15 @@ containerTodos.addEventListener('click', (e) => {
         todoDel.style.display = 'block'
         boxTodo = document.querySelector(`#${e.target.id}`)
         boxTodo.classList.add('delete')
+        let historyScroll = window.scrollY
         showModal('flex', 'این کار روزانه حذف شود؟')
+        closeBtn.onclick = () => {
+            window.scrollTo(0, historyScroll)
+        }
+        document.querySelector('.containerModal').scrollIntoView()
         todoDel.onclick = () => {
             deleteTodo(e)
-            closeModal(boxTodo)
+            closeModal()
         }
     }
 })
@@ -180,6 +188,46 @@ function closeModal() {
     todoDel.style.display = 'none'
 }
 
+const selectTag = $.querySelector('#selectTag')
+selectTag.addEventListener('change', () => {
+    let getTodo = get('https://apptodos-2a17c-default-rtdb.firebaseio.com/apptodos/todo.json')
+    if (selectTag.value === 'تکمیل شده') {
+        getTodo.then(data => {
+            completeTodos(data, true)
+        }).catch(() => {
+            showModal('flex', "مجدد امتحان کنید")
+            selectTag.value = "همه"
+        })
+    } else if (selectTag.value === 'تکمیل نشده') {
+        getTodo.then(data => {
+            completeTodos(data, false)
+        }).catch(() => {
+            showModal('flex', "مجدد امتحان کنید")
+            selectTag.value = "همه"
+        })
+    } else {
+        getTodo.then(data => {
+            templateTodo(data)
+            showModal('flex', "کار های روزانه جمع اوری شدند")
+        }).catch(() => {
+            showModal('flex', "اتصال خود را بررسی کنید")
+        })
+
+
+    }
+})
+
+function completeTodos(todos, boolean) {
+    containerTodos.innerHTML = ''
+    let fragment = document.createDocumentFragment()
+    todos.forEach(todo => {
+        if (todo[1].isDone === boolean) {
+            generatorTemplateTodos(todo, fragment)
+        }
+    })
+    containerTodos.append(fragment)
+}
+
 closeBtn.addEventListener('click', closeModal)
 input.addEventListener('keypress', (e) => {
     if (e.keyCode === 13) {
@@ -189,3 +237,4 @@ input.addEventListener('keypress', (e) => {
 saveTodoBtn.addEventListener('click', () => {
     creatData()
 })
+
